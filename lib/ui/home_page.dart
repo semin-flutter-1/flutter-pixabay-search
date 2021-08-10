@@ -1,8 +1,8 @@
+import 'dart:convert' as convert;
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:pixabay_search/model/image_info.dart' as imageInfo;
-import 'package:pixabay_search/repository/fake_data_repository.dart';
-import 'package:pixabay_search/repository/pixabay_repository.dart';
-import 'package:pixabay_search/ui/home_view_model.dart';
 import 'package:pixabay_search/ui/widget/image_item.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,9 +15,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _textController = TextEditingController();
 
-  final viewModel = HomeViewModel(PixabayRepository());
-
   bool isLoading = false;
+
+  List<imageInfo.ImageInfo> items = [];
+
+  final baseUrl = 'https://pixabay.com/api/';
+
+  Future<List<imageInfo.ImageInfo>> fetch({String? query}) async {
+    final url = Uri.parse(
+        '$baseUrl?key=17828481-17c071c7f8eadf406822fada3&q=${query ?? 'iPhone'}&image_type=photo');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final jsonResponse =
+          convert.jsonDecode(response.body) as Map<String, dynamic>;
+
+      final Iterable hits = jsonResponse['hits'];
+
+      return hits.map((e) => imageInfo.ImageInfo.fromJson(e)).toList();
+    } else {
+      print('Request failed with status: ${response.statusCode}.');
+    }
+
+    return [];
+  }
 
   @override
   void initState() {
@@ -31,7 +52,7 @@ class _HomePageState extends State<HomePage> {
       isLoading = true;
     });
 
-    await viewModel.fetch(query: query);
+    items = await fetch(query: query);
 
     setState(() {
       isLoading = false;
@@ -75,9 +96,9 @@ class _HomePageState extends State<HomePage> {
                   )
                 : ListView.builder(
                     shrinkWrap: true,
-                    itemCount: viewModel.items.length,
+                    itemCount: items.length,
                     itemBuilder: (_, index) {
-                      return ImageItem(viewModel.items[index]);
+                      return ImageItem(items[index]);
                     },
                   ),
           ),
