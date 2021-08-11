@@ -1,4 +1,4 @@
-class ImageInfo {
+class ImageResult {
   int? id;
   String? pageURL;
   String? type;
@@ -22,7 +22,7 @@ class ImageInfo {
   String? user;
   String? userImageURL;
 
-  ImageInfo({
+  ImageResult({
       this.id, 
       this.pageURL, 
       this.type, 
@@ -46,7 +46,7 @@ class ImageInfo {
       this.user, 
       this.userImageURL});
 
-  ImageInfo.fromJson(dynamic json) {
+  ImageResult.fromJson(dynamic json) {
     id = json['id'];
     pageURL = json['pageURL'];
     type = json['type'];

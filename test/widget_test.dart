@@ -6,7 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pixabay_search/model/image_info.dart' as imageInfo;
+import 'package:pixabay_search/model/image_result.dart' as imageInfo;
 import 'package:pixabay_search/repository/pixabay_repository.dart';
 
 void main() {
@@ -14,7 +14,7 @@ void main() {
     // final repository = FakeDataRepository();
     final repository = PixabayRepository();
 
-    List<imageInfo.ImageInfo> items = await repository.fetch();
+    List<imageInfo.ImageResult> items = await repository.fetch();
 
     expect(20, items.length);
 

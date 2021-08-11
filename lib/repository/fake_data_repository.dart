@@ -1,21 +1,21 @@
-import 'package:pixabay_search/model/image_info.dart';
+import 'package:pixabay_search/model/image_result.dart';
 
 // dart 2.13.0
 typedef Json = Map<String, dynamic>;
 
 
 class FakeDataRepository {
-  List<ImageInfo> _items = [];
+  List<ImageResult> _items = [];
 
-  List<ImageInfo> get items => _items;
+  List<ImageResult> get items => _items;
 
-  Future<List<ImageInfo>> fetch() async {
+  Future<List<ImageResult>> fetch() async {
     await Future.delayed(Duration(seconds: 1));
     _items = _makeData();
     return _items;
   }
 
-  List<ImageInfo> _makeData() {
+  List<ImageResult> _makeData() {
     final List<Map<String, dynamic>> json = [
       {
         "id": 336378,
@@ -499,6 +499,6 @@ class FakeDataRepository {
       }
     ];
 
-    return json.map((e) => ImageInfo.fromJson(e)).toList();
+    return json.map((e) => ImageResult.fromJson(e)).toList();
   }
 }

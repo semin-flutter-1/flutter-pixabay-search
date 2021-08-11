@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:pixabay_search/repository/pixabay_repository.dart';
 import 'package:pixabay_search/ui/home_page.dart';
+import 'package:pixabay_search/ui/home_view_model.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => HomeViewModel(PixabayRepository())),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
