@@ -1,10 +1,11 @@
+import 'package:get/get.dart';
 import 'package:pixabay_search/model/image_result.dart';
 
 // dart 2.13.0
 typedef Json = Map<String, dynamic>;
 
 
-class FakeDataRepository {
+class FakeDataRepository extends GetxController {
   List<ImageResult> _items = [];
 
   List<ImageResult> get items => _items;

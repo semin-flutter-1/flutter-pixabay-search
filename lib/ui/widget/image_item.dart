@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pixabay_search/model/image_result.dart' as imageInfo;
+import 'package:pixabay_search/model/image_result.dart';
 
 class ImageItem extends StatelessWidget {
-  final imageInfo.ImageResult info;
+  final ImageResult info;
 
   const ImageItem(this.info, {Key? key}) : super(key: key);
 

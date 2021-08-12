@@ -1,22 +1,23 @@
-import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:pixabay_search/model/image_result.dart';
 import 'package:pixabay_search/repository/pixabay_repository.dart';
 
-class HomeViewModel extends ChangeNotifier {
+class HomeViewModel extends GetxController {
   final PixabayRepository _repository;
 
-  List<ImageResult> _items = [];
+  final RxList _items = <ImageResult>[].obs;
 
-  List<ImageResult> get items => _items;
+  RxList get items => _items;
 
-  bool _isLoading = false;
+  final RxBool _isLoading = false.obs;
 
-  bool get isLoading => _isLoading;
+  RxBool get isLoading => _isLoading;
 
   HomeViewModel(this._repository);
 
   Future fetch({String? query}) async {
-    _items = await _repository.fetch(query: query);
-    notifyListeners();
+    _isLoading.value = true;
+    _items.value = await _repository.fetch(query: query);
+    _isLoading.value = false;
   }
 }

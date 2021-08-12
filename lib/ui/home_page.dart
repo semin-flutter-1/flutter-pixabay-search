@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pixabay_search/ui/home_view_model.dart';
 import 'package:pixabay_search/ui/widget/image_item.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,12 +12,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _textController = TextEditingController();
+  final viewModel = Get.find<HomeViewModel>();
 
   @override
   void initState() {
     super.initState();
 
-    context.read<HomeViewModel>().fetch();
+    viewModel.fetch();
   }
 
   @override
@@ -28,9 +29,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<HomeViewModel>();
-    final isLoading = viewModel.isLoading;
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -53,18 +51,20 @@ class _HomePageState extends State<HomePage> {
               )
             ],
           ),
-          Expanded(
-            child: isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: viewModel.items.length,
-                    itemBuilder: (_, index) {
-                      return ImageItem(viewModel.items[index]);
-                    },
-                  ),
+          Obx(
+            () => Expanded(
+              child: viewModel.isLoading.value
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: viewModel.items.length,
+                      itemBuilder: (_, index) {
+                        return ImageItem(viewModel.items[index]);
+                      },
+                    ),
+            ),
           ),
         ],
       ),
